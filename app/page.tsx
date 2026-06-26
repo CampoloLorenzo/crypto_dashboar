@@ -8,6 +8,7 @@ import FearGreedGauge from "@/components/FearGreedGauge";
 import OpportunityRadar from "@/components/OpportunityRadar";
 import AIAssistant from "@/components/AIAssistant";
 import PortfolioPanel from "@/components/PortfolioPanel";
+import KrakenPanel from "@/components/KrakenPanel";
 
 interface DashboardData {
   coins: ScoredCoin[];
@@ -122,6 +123,7 @@ export default function Page() {
           <div className="grid lg:grid-cols-[1fr_360px] gap-6 items-start">
             <OpportunityRadar coins={data?.coins ?? []} />
             <div className="space-y-6">
+              <KrakenPanel coins={data?.coins ?? []} />
               <PortfolioPanel coins={data?.coins ?? []} />
               <AIAssistant />
             </div>
