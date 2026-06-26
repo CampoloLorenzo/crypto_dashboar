@@ -1,0 +1,22 @@
+name: Hourly Crypto Refresh
+
+# Vercel Hobby limita i cron a 1/giorno: usiamo GitHub Actions (gratis) per
+# triggerare /api/cron/refresh ogni ora. Imposta i secret APP_URL e CRON_SECRET
+# nelle impostazioni del repo (Settings > Secrets and variables > Actions).
+on:
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch: {}
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger refresh endpoint
+        run: |
+          code=$(curl -s -o /tmp/body.txt -w "%{http_code}" -X POST \
+            "${{ secrets.APP_URL }}/api/cron/refresh" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}")
+          echo "HTTP $code"
+          cat /tmp/body.txt
+          test "$code" = "200"
